@@ -26,9 +26,9 @@ jobs:
 
       - name: Save inventory file
         run: |
-          echo "[ubuntu]" > inventory.ini
-          echo "127.0.0.1 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key" >> inventory.ini
-        shell: bash 
+          "[ubuntu]" | Out-File inventory.ini -Encoding ascii
+          "127.0.0.1 ansible_user=vagrant ansible_ssh_private_key_file=$env:USERPROFILE\.vagrant.d\insecure_private_key" | Add-Content inventory.ini
+        shell: powershell
 
       - name: Upload inventory artifact
         uses: actions/upload-artifact@v4
