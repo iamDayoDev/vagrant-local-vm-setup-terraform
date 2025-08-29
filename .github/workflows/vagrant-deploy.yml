@@ -51,16 +51,16 @@ jobs:
           name: inventory
 
       - name: Fix private key permissions
-        shell: pwsh
+        shell: bash
         run: |
              wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
 
       - name: Remove the old key used in the previous project
-        shell: pwsh
+        shell: bash
         run: |
             wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
 
       - name: Run Playbook
-        shell: pwsh
+        shell: bash
         run: |
             wsl --user root ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/USER/Desktop/Workshop/terraform-vagrant-vm-workflow/inventory.ini /mnt/c/Users/USER/Desktop/Workshop/terraform-vagrant-vm-workflow/playbook.yml
