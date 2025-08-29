@@ -18,24 +18,11 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-
-
-      # - name: Terraform Init
-      #   run: C:\Terraform\terraform.exe init
-
-      # - name: Terraform Apply (run Vagrant)
-      #   run: C:\Terraform\terraform.exe apply -auto-approve
-
-      #    - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v2
-      #   with:
-      #     terraform_version: 1.7.5  # or whichever version you need
-
       - name: Terraform Init
-        run: terraform init
+        run: C:\Terraform\terraform.exe init
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      - name: Terraform Apply (run Vagrant)
+        run: C:\Terraform\terraform.exe apply -auto-approve
 
       - name: Save inventory file
         run: |
