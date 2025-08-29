@@ -1,0 +1,68 @@
+name: Terraform-Vagrant-Ansible
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: Terraform & Vagrant
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3  
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+
+
+      - name: Terraform Init
+        run: C:\Terraform\terraform.exe init
+
+      - name: Terraform Apply (run Vagrant)
+        run: C:\Terraform\terraform.exe apply -auto-approve
+
+      - name: Save inventory file
+        run: |
+          echo "[ubuntu]" > inventory.ini
+          echo "127.0.0.1 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key" >> inventory.ini
+        shell: pwsh 
+
+      - name: Upload inventory artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory
+          path: inventory.ini
+
+
+  ansible:
+    name: Run Ansible
+    runs-on: self-hosted
+    needs: terraform
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download inventory
+        uses: actions/download-artifact@v4
+        with:
+          name: inventory
+
+      - name: Fix private key permissions
+        shell: pwsh
+        run: |
+             wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
+
+      - name: remove the old key li ken ma5doum ken project 9able ken ye5dem
+        shell: pwsh
+        run: |
+            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
+
+      - name: Run Playbook
+        shell: pwsh
+        run: |
+            wsl --user root ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/USER/Desktop/Workshop/terraform-vagrant-vm-workflow/inventory.ini /mnt/c/Users/USER/Desktop/Workshop/terraform-vagrant-vm-workflow/playbook.yml

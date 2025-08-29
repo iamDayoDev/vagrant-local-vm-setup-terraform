@@ -1,0 +1,29 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.terraform*
+terraform.tfvars
+crash.log
+*.log
+.terraform/
+terraform-provider-*
+
+# Vagrant files
+.vagrant/
+*.box
+*.virtualbox
+*.vagrantfile
+
+# SSH config and keys
+ssh_config
+*.pem
+*.key
+*.pub
+*.crt
+*.der
+*.p12
+*.pfx
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
